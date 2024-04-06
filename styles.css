@@ -1,0 +1,34 @@
+#contenedorDeBandas {
+    /* Ajusta esto según necesites */
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+.banda {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    text-align: center; /* Centra el texto */
+}
+.banda input[type="text"], .banda input[type="number"] {
+    display: block; /* Hace que el input use todo el ancho disponible */
+    width: 80%; /* Define el ancho del input */
+    margin: 10px auto; /* Centra el input horizontalmente */
+    padding: 5px; /* Agrega algo de padding dentro del input para que se vea mejor */
+}
+       
+/* Estilo para botones dentro de las bandas */
+.banda button {
+    width: auto; /* Permite que el botón se ajuste al texto */
+    display: block; /* Asegura que el botón esté centrado */
+    margin: 20px auto; /* Espacio arriba y abajo, centrado horizontalmente */
+}
+        
+.resultado {
+    padding: 15px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+

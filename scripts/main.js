@@ -1,82 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Estación Radio Electrica</title>
-    <style>
-        #contenedorDeBandas {
-        /* Ajusta esto según necesites */
-        padding: 20px;
-        background-color: #f8f9fa;
-        border-radius: 5px;
-        }
-        .banda {
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            text-align: center; /* Centra el texto */
-        }
-        .banda input[type="text"],
-.banda input[type="number"] {
-    display: block; /* Hace que el input use todo el ancho disponible */
-    width: 80%; /* Define el ancho del input */
-    margin: 10px auto; /* Centra el input horizontalmente */
-    padding: 5px; /* Agrega algo de padding dentro del input para que se vea mejor */
-}
-       
-/* Estilo para botones dentro de las bandas */
-.banda button {
-    width: auto; /* Permite que el botón se ajuste al texto */
-    display: block; /* Asegura que el botón esté centrado */
-    margin: 20px auto; /* Espacio arriba y abajo, centrado horizontalmente */
-}
-        
-        .resultado {
-        padding: 15px;
-        background-color: #e9ecef;
-        border-radius: 5px;
-        margin-top: 20px;
-    }
-    </style>
+/*Las variables  valoresErpPorBanda valoresErpPorBanda1 son arreglos globales las cuales se crean
+para poder obtener los resultados en la funcion calcularEIRPyERP
+*/
+var valoresErpPorBanda = {};
+var valoresErpPorBanda1 = {};
 
-
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="./index.html">Navbar</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="./Calculos.html">Proyecto</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-              </li>
-            </ul>
-            
-          </div>
-        </div>
-    </nav>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <script>
-        /*Las variables  valoresErpPorBanda valoresErpPorBanda1 son arreglos globales las cuales se crean
-        para poder obtener los resultados en la funcion calcularEIRPyERP
-        */
-        var valoresErpPorBanda = {};
-        var valoresErpPorBanda1 = {};
-
-        function generarBandas() {
+function generarBandas() {
             var numeroDeBandas = parseInt(document.getElementById('numeroDeBandas').value);
             var contenedorDeBandas = document.getElementById('contenedorDeBandas');
             
@@ -113,7 +41,7 @@
             
             
 
-        function calcularEIRPyERP(banda) {
+function calcularEIRPyERP(banda) {
             var potenciaTransmisorWatt = parseFloat(document.getElementById('potenciaTransmisor' + banda).value);
             var gananciaAntena = parseFloat(document.getElementById('gananciaAntena' + banda).value);
             var atenuacion = parseFloat(document.getElementById('atenuacion' + banda).value);
@@ -123,6 +51,7 @@
                 document.getElementById('resultadosERP' + banda).innerHTML = '';
                 return;
             }
+
             /*Calculo del PIRE*/
             var potenciaTransmisorDBW = 10 * Math.log10(potenciaTransmisorWatt);
             var eirpDBW = potenciaTransmisorDBW + gananciaAntena - atenuacion;
@@ -434,43 +363,3 @@
         
       }
 
-
-
-
-
-
-
-
-
-
-    </script>
-
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <form>
-                <div class="mb-3">
-                    <label for="numeroDeBandas" class="form-label">Número de Antenas:</label>
-                    <input type="number" class="form-control" id="numeroDeBandas" name="numeroDeBandas" min="1" value="1">
-                </div>
-                <div class="text-center">
-                    <button type="button" class="btn btn-primary" onclick="generarBandas()">Generar Antenas</button>
-                </div>
-            </form>
-            <div id="contenedorDeBandas" class="mt-3">
-                <!-- Aquí se insertarán las bandas como tarjetas -->
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
-</html>

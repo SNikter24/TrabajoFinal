@@ -44,16 +44,28 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <form>
-                <div class="mb-3">
-                    <label for="numeroDeBandas" class="form-label">Número de Antenas:</label>
-                    <input type="number" class="form-control" id="numeroDeBandas" name="numeroDeBandas" min="1" value="1">
-                </div>
-                <div class="text-center">
-                    <button type="button" class="btn btn-primary" onclick="generarBandas()">Generar Antenas</button>
-                </div>
-            </form>
             <div id="contenedorDeBandas" class="mt-3">
+                    <h3>Antena</h3>
+                    <label for="potenciaTransmisor">Potencia del Transmisor (W):</label><br>
+                    <input type="number" value="0" min="0" id="potenciaTransmisor" name="potenciaTransmisor"><br>
+                    <label for="gananciaAntena">Ganancia de la Antena (dBi):</label><br>
+                    <input type="number" value="0" min="0" id="gananciaAntena" name="gananciaAntena"><br>
+                    <label for="atenuacion">Atenuación (dB):</label><br>
+                    <input type="value" value="0" min="0" id="atenuacion" name="atenuacion"><br>
+                    <button type="button" class="btn btn-success" onclick="calcularEIRPyERP()">Calcular EIRP y ERP Antena</button>
+                    <div  id="resultadosEIRP" class="alert alert-primary" role="alert" class="resultado"></div>
+                    <div  id="resultadosERP" class="alert alert-primary" role="alert" class="resultado"></div><br>
+                    <label for="frecuencia">Frecuencia (MHz):</label>
+                    <input type="number" value="0" min="0" id="frecuencia" name="frecuencia"><br>
+                    <label for="alturaRadiacion">Ingrese la altura de la  antena (m):</label>
+                    <input type="number" value="0" min="0" id="alturaRadiacion" name="alturaRadiacion"><br>
+                    <button type="button" class="btn btn-success" onclick="calcularRelacionExposicion()">Calcular Relación de Exposición</button>
+                    <div id="ResultadosTres" class="resultado"></div>
+                    <div id="ResultadosCuatro" class="resultado"></div>
+                    <div id="ResultadosCinco" class="resultado"></div>
+                    <div id="ResultadosSeis" class="resultado"></div>
             </div>
+           </form>
         </div>
     </div>
 </div>

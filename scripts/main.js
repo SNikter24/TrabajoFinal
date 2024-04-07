@@ -1,315 +1,173 @@
-/*Las variables  valoresErpPorBanda valoresErpPorBanda1 son arreglos globales las cuales se crean
-para poder obtener los resultados en la funcion calcularEIRPyERP
-*/
-let valoresErpPorBanda = 0;
-let valoresErpPorBanda1 = 0; 
-           
-function calcularEIRPyERP() {
-            let potenciaTransmisorWatt = document.getElementById('potenciaTransmisor').value;
-            const gananciaAntena = document.getElementById('gananciaAntena').value;
-            const atenuacion = document.getElementById('atenuacion').value;
+//import { minDistanciaPublico, minDistanciaOcupacional } from "./evaluar_ANE_3-2.js";
 
-            if (potenciaTransmisorWatt <= 0){
-                potenciaTransmisorWatt = 1
-                return;
-            }
+class Antena {
 
-            /*Calculo del PIRE*/
-            let potenciaTransmisorDBW = 10 * Math.log10(potenciaTransmisorWatt);
-            let eirpDBW = potenciaTransmisorDBW + gananciaAntena - atenuacion;
-            let eirpWatt = Math.pow(10, eirpDBW / 10);
-            let eirpDBm = eirpDBW + 30;
+    potTrans = 0;
+    antena_dbi = 0;
+    antena_dbd = 0;
+    atenuacion = 0;
+    amplificador = 0;
 
-            // Aquí se calcula el ERP
-            let perdbm=eirpDBm-2.15;
-            let perdbw=perdbm-30;
-            let perdbV= Math.pow(10,perdbw/10);
-            let gananciaAntenaLineal = Math.pow(10, gananciaAntena / 10);
-            let erpWatt = potenciaTransmisorWatt * gananciaAntenaLineal; // ERP en vatios
-            let erpDBW = 10 * Math.log10(erpWatt); // ERP en dBW
-            let erpDBm = erpDBW + 30; // ERP en dBm
+    pire = 0;
+    per = 0;
 
-            document.getElementById('resultadosEIRP').innerHTML = 
-                '<strong>PIRE:</strong><br>' +
-                'PIRE en dBW: ' + eirpDBW.toFixed(2) + ' dBW'+'<br>' +
-                'PIRE en vatios: ' + eirpWatt.toFixed(2) + ' W<br>' +
-                'PIRE en dBm: ' + eirpDBm.toFixed(2)+ ' dBm';
+    frecuencia = 0;
+    altura = 0;
 
-            document.getElementById('resultadosERP').innerHTML = 
-                '<strong>PER (PRA):</strong><br>' +
-                'PER en dBW: ' + perdbw.toFixed(2) +' dBW'+ '<br>' +
-                'PER en vatios: ' + perdbV.toFixed(2) + ' W<br>' +
-                'PER en dBm: ' + perdbm.toFixed(2)+' dBm ';
-                valoresErpPorBanda = eirpWatt;
-                valoresErpPorBanda1 = perdbV;
-}
+    constructor(potenciaTransmisor, gananciaAntena_dBi, gananciaAntena_dBd,
+                atenuacion, amplificador, frecuencia, altura){
         
-function calcularRelacionExposicion () {
-        const frecuencia = document.getElementById('frecuencia').value;
-        let alturaRadiacion= document.getElementById('alturaRadiacion').value;
-        const eripWattActual = valoresErpPorBanda
-        const erpWattActual = valoresErpPorBanda1
-  
-      if (0.1 <= frecuencia && frecuencia < 30) {
-        document.getElementById('ResultadosTres').innerHTML ='Esta adentro'+frecuencia.toFixed(2)+eripWattActual.toFixed(2);
+        // valores en dB
+        this.potTrans = potenciaTransmisor;
+        this.antena_dbi = gananciaAntena_dBi;
+        this.antena_dbd = gananciaAntena_dBd;
+        this.atenuacion = atenuacion;
+        this.amplificador = amplificador;
 
-          
-        } else if (30 <=frecuencia && frecuencia <= 400) {
-            alturaRadiacion=alturaRadiacion-2;
-            /*Las variables minimaDistancia se usa para PIRE y minimaDistancia1 para PER y ambas 
-             son para  Ocupacional */
-            minimaDistancia=0.143*(Math.sqrt(eripWattActual));
-            minimaDistancia1=0.184*(Math.sqrt(erpWattActual));
-            /*Las variables minimaDistanciaPublic se usa para PIRE y minimaDistanciaPublic1 para PER y ambas 
-             son para  Publico en General */
-            minimaDistanciaPublic=0.319*(Math.sqrt(eripWattActual));
-            minimaDistanciaPublic1=0.409*(Math.sqrt(erpWattActual));
-            /*Estos document se hacen para limpiar las variables Resultados para que no tenga datos guardados en 
-            cache para cuando se actualzia con otro dato de altura*/
-            document.getElementById('ResultadosTres').innerHTML = '';
-            document.getElementById('ResultadosCuatro').innerHTML = '';
-            document.getElementById('ResultadosCinco').innerHTML = '';
-            document.getElementById('ResultadosSeis').innerHTML = '';
-            if(alturaRadiacion>minimaDistancia){
-                document.getElementById('ResultadosTres').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Ocupacional</strong><br>
-                    Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistancia.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
-                    document.getElementById('ResultadosCuatro').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Ocupacional</strong><br>
-                    Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistancia1.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
-                    document.getElementById('ResultadosCinco').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Público en General</strong><br>
-                    Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistanciaPublic.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
-                    document.getElementById('ResultadosSeis').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Público en General</strong><br>
-                    Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistanciaPublic1.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
+        this.frecuencia = frecuencia; // MHz
+        this.altura= altura; // mts
 
-            }else {  
-                /*MinimaDhorizontal evalua minimaDistancia para ocupacional, esto se hace para el pire */
-                MinimaDhorizontal= Math.sqrt((minimaDistancia**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosTres').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal.toFixed(2)} (m).
-                 </div>
-                     `;
-                     /*MinimaDhorizontal1 evalua minimaDistancia1 para ocupacional, esto se hace para el Per */
-                MinimaDhorizontal1= Math.sqrt((minimaDistancia1**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosCuatro').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal1.toFixed(2)} (m).
-                 </div>
-                     `;
-                /*MinimaDhorizontal2 evalua minimaDistanciaPublic para Publico en general, esto se hace para el Pire */
-                MinimaDhorizontal2= Math.sqrt((minimaDistanciaPublic**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosCinco').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal2.toFixed(2)} (m).
-                 </div>
-                     `;
+        // valores en W
+        this.pire = this.potTrans + this.antena_dbi + this.amplificador + this.atenuacion;
+        this.per = this.potTrans + this.antena_dbd+ this.amplificador + this.atenuacion;
+        this.pire = this.dBtoW(this.pire)
+        this.per = this.dBtoW(this.per)
 
-                 /*MinimaDhorizontal3 evalua minimaDistanciaPublic1 para Publico en general, esto se hace para el PER */
-                MinimaDhorizontal3= Math.sqrt((minimaDistanciaPublic1**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosSeis').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal3.toFixed(2)} (m).
-                 </div>
-                     `;
-              
-            }    
-       } else if (400 < frecuencia && frecuencia <= 2000) {
-         alturaRadiacion=alturaRadiacion-2;
-            minimaDistancia=2.92*(Math.sqrt(eripWattActual/frecuencia));
-            minimaDistancia1=3.74*(Math.sqrt(erpWattActual/frecuencia));
-            minimaDistanciaPublic=6.38*(Math.sqrt(eripWattActual/frecuencia));
-            minimaDistanciaPublic1=8.16*(Math.sqrt(erpWattActual/frecuencia));
-            document.getElementById('ResultadosTres').innerHTML = '';
-            document.getElementById('ResultadosCuatro').innerHTML = '';
-            document.getElementById('ResultadosCinco').innerHTML = '';
-            document.getElementById('ResultadosSeis').innerHTML = '';
-            if(alturaRadiacion>minimaDistancia){
-                document.getElementById('ResultadosTres').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Ocupacional</strong><br>
-                    Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistancia.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
-                    document.getElementById('ResultadosCuatro').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Ocupacional</strong><br>
-                    Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistancia1.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
-                    document.getElementById('ResultadosCinco').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Público en General</strong><br>
-                    Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistanciaPublic.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
-                    document.getElementById('ResultadosSeis').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Público en General</strong><br>
-                    Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistanciaPublic1.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
+        this.evaluaciones = [];
 
-            }else {  
-                MinimaDhorizontal= Math.sqrt((minimaDistancia**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosTres').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal.toFixed(2)} (m).
-                 </div>
-                     `;
-                MinimaDhorizontal1= Math.sqrt((minimaDistancia1**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosCuatro').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal1.toFixed(2)} (m).
-                 </div>
-                     `;
-
-                MinimaDhorizontal2= Math.sqrt((minimaDistanciaPublic**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosCinco').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal2.toFixed(2)} (m).
-                 </div>
-                     `;
-                MinimaDhorizontal3= Math.sqrt((minimaDistanciaPublic1**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosSeis').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal3.toFixed(2)} (m).
-                 </div>
-                     `;
-              
-            } 
-
-       } else if (2000 < frecuencia && frecuencia <= 300000) {
-        alturaRadiacion=alturaRadiacion-2;
-            minimaDistancia=0.0638*(Math.sqrt(eripWattActual));
-            minimaDistancia1=0.0819*(Math.sqrt(erpWattActual));
-            minimaDistanciaPublic=0.143*(Math.sqrt(eripWattActual));
-            minimaDistanciaPublic1=0.184*(Math.sqrt(erpWattActual));
-            document.getElementById('ResultadosTres').innerHTML = '';
-            document.getElementById('ResultadosCuatro').innerHTML = '';
-            document.getElementById('ResultadosCinco').innerHTML = '';
-            document.getElementById('ResultadosSeis').innerHTML = '';
-            if(alturaRadiacion>minimaDistancia){
-                document.getElementById('ResultadosTres').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Ocupacional</strong><br>
-                    Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistancia.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
-                    document.getElementById('ResultadosCuatro').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Ocupacional</strong><br>
-                    Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistancia1.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
-                    document.getElementById('ResultadosCinco').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Público en General</strong><br>
-                    Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistanciaPublic.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
-                    document.getElementById('ResultadosSeis').innerHTML = `
-                    <div class="alert alert-success" role="alert">
-                    <strong>Público en General</strong><br>
-                    Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                    Comparando que la altura de su antena (a) es ${alturaRadiacion.toFixed(2)} (m) es mayor que r ${minimaDistanciaPublic1.toFixed(2)} (m) no necesitamos calcular "d" y podemos concluir que la antena cumple con las normas de seguridad en base a su altura.
-                    </div>
-                    `;
-
-            }else {  
-                MinimaDhorizontal= Math.sqrt((minimaDistancia**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosTres').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal.toFixed(2)} (m).
-                 </div>
-                     `;
-                MinimaDhorizontal1= Math.sqrt((minimaDistancia1**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosCuatro').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal1.toFixed(2)} (m).
-                 </div>
-                     `;
-
-                MinimaDhorizontal2= Math.sqrt((minimaDistanciaPublic**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosCinco').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Pire en W es: ${eripWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal2.toFixed(2)} (m).
-                 </div>
-                     `;
-                MinimaDhorizontal3= Math.sqrt((minimaDistanciaPublic1**2)-(alturaRadiacion**2));
-                document.getElementById('ResultadosSeis').innerHTML = `
-                 <div class="alert alert-warning" role="alert">
-                 <strong>Ocupacional</strong><br>
-                Su Per en W es: ${erpWattActual.toFixed(2)}<br>
-                La altura de su antena ${alturaRadiacion.toFixed(2)} (m) no es lo suficientemente alta.<br>
-                 Su mínima distancia a la que puedes acercarte es (d): ${MinimaDhorizontal3.toFixed(2)} (m).
-                 </div>
-                     `;
-              
-            } 
-
-       }
-      else {
-      return "Escenario no válido";
     }
+
+    // W -> dBm
+    WtodBm(value){
+        return 10*Math.log10(value/0.001);
+    }
+
+    // W -> dB
+    WtodBW(value){
+        return 10*Math.log10(value);
+    }
+
+    // dB -> W
+    dBtoW(value){
+        return Math.pow(10,value/10);
+    }
+
+    // dB -> dBm
+    dBtodBm(value){
+        return value+30;
+    }
+
+    // dBm -> dB
+    dBmtodB(value){
+        return value-30;
+    }
+}
+
+function debug(antena){
+    console.table(antena);
+}
+
+function darResultados(){
+    const potenciaTrans = parseFloat(document.getElementById('potenciaTransmisor').value);
+    const amplificador = parseFloat(document.getElementById('amplificador').value);
+    const atenuacion = parseFloat(document.getElementById('atenuacion').value);
+    const antena_dbi = parseFloat(document.getElementById('gananciaAntena_dbi').value);
+    const antena_dbd = parseFloat(document.getElementById('gananciaAntena_dbd').value);
+
+    const frecuencia = parseFloat(document.getElementById('frecuencia').value);
+    const altura = parseInt(document.getElementById('altura').value);
+
+    const antena = new Antena(potenciaTrans, antena_dbi, antena_dbd, atenuacion, amplificador, frecuencia, altura);
+
+    darPIRE_PER(antena);
+    const evaluaciones = evaluacion(antena);
+    evaluaciones.forEach((eva)=>{
+        const padre = document.getElementById("quepasoCrack");
+        const temp = document.createElement('div');
+        temp.innerHTML = eva;
+        padre.appendChild(temp);
+    });
+
+    debug(antena);
+}
+           
+function darPIRE_PER(antena) {
+
+    const pire_w = antena.pire;
+    const pire_db = antena.WtodBW(pire_w);
+    const pire_dbm = antena.WtodBm(pire_w);
+
+    const per_w = antena.per;
+    const per_db = antena.WtodBW(per_w);
+    const per_dbm = antena.WtodBm(per_w);
+
+    document.getElementById('resultadosEIRP').innerHTML = 
+        '<strong>PIRE:</strong><br>' +
+        'PIRE en dBW: ' + pire_db.toFixed(2) + ' dBW'+'<br>' +
+        'PIRE en vatios: ' + pire_w.toFixed(2) + ' W<br>' +
+        'PIRE en dBm: ' + pire_dbm.toFixed(2)+ ' dBm';
+
+    document.getElementById('resultadosERP').innerHTML = 
+        '<strong>PER (PRA):</strong><br>' +
+        'PER en dBW: ' + per_db.toFixed(2) +' dBW'+ '<br>' +
+        'PER en vatios: ' + per_w.toFixed(2) + ' W<br>' +
+        'PER en dBm: ' + per_dbm.toFixed(2)+' dBm ';
+}
+
+function elementoChequeo(informacion){
+
+    const clConforme = informacion.conforme ? "alert-success" : "alert-warning";
+    const listaRazones = informacion.razones.map((razon)=>`<p>${razon}</p>`) 
+    
+
+   let elemento =`
+    <div class="alert ${clConforme}" role="alert">
+    <p><strong>${informacion.titulo}</strong></p>
+    `;
+
+    if (informacion.medicion) {
+        elemento = elemento.concat("\n","<h3><strong>SE TIENE QUE MEDIR</strong></h3>")
+    }
+
+    listaRazones.forEach((razon)=> (elemento = elemento.concat("\n",razon)))
+    elemento = elemento.concat("\n","</div>")
+
+    return elemento;
+
+}
+
+function chequeos(funcion_eval, ...args){
+    const informacion = {
+        medicion: false,
+        conforme: false,
+        titulo: "",
+        razones: []
+    }
+
+    return funcion_eval(informacion, ...args)
+}
+
+function evaluacion(antena){
+
+    let listaElementos=[]
+    let resultadoGral = {
+        senalizar : false,
+        conforme: false,
+        medicion: false
+    }
+
+    listaElementos.push(
+            elementoChequeo(
+                chequeos(minDistanciaPublico, antena.pire,
+                        antena.frecuencia, antena.altura, resultadoGral)
+            ));
+
+    listaElementos.push(
+            elementoChequeo(
+                chequeos(minDistanciaOcupacional, antena.pire,
+                        antena.frecuencia, antena.altura, resultadoGral)
+            ));
+
+    return listaElementos;
     
 }
-

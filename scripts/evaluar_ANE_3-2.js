@@ -1,7 +1,16 @@
 function minDistanciaPublico(resultado, PIRE, frecuencia, a, resultadoGral){
 
     let r_min = 0;
-    resultado.titulo = "[Punto 3.2] Procesos para evaluacion simplificada espacio publico general para bandas no IMT"
+    resultado.titulo = "[Punto 3.2] Espacio Publico General: Evaluacion simplificada para bandas no IMT"
+    if (frecuencia < 30){
+        resultado.medicion = true;
+        resultadoGral.medicion = true;
+        resultadoGral.senalizar = true;
+        resultado.razones.push("La frecuencia es menor de 30Mhz, se debe seguir el procedimiento del punto 3.4 para mediciones de campos electromagnéticos.");
+        resultado.razones.push("Posiblemente se deba señalizar.");
+            return resultado;
+    }
+    resultado.razones.push("Vease la Figura 1 para saber el cálculo.");
 
     if (30 <= frecuencia && frecuencia <= 400){
         if (PIRE > 0){
@@ -17,6 +26,7 @@ function minDistanciaPublico(resultado, PIRE, frecuencia, a, resultadoGral){
         }else {r_min = 0}
     }else{
         resultado.medicion = true;
+        resultadoGral.medicion = true;
         resultado.razones.push("La frecuencia esta fuera de los rangos de evaluacion. Verifique su medicion de la frecuencia.");
         return resultado;
     }
@@ -24,16 +34,18 @@ function minDistanciaPublico(resultado, PIRE, frecuencia, a, resultadoGral){
     if ( r_min > a ){
         resultado.medicion = true;
         resultado.conforme = true;
-        resultadoGral.senalizar = true;
         resultadoGral.conforme = true;
-        resultado.razones.push(`Ya que la distancia r: ${r_min} > ${a}, se requiere de la medicion en la distancia poblacional. Lease punto 3.2.`);
+        resultadoGral.medicion = true;
+        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts > <b>a</b>: ${a} mts, se requiere de la medicion en la distancia poblacional. Lease punto 3.2.`);
     }else if (r_min == a){
         resultado.razones.push('Su PIRE es de 0, verifique sus datos.');
     }else{
         resultado.conforme = true;
         resultadoGral.conforme = true;
-        resultado.razones.push(`Ya que la distancia r: ${r_min} < ${a}, no se requiere de la medicion en la distancia poblacional, ya que no se puede obtener. Lease punto 3.2`);
+        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts <  <b>a</b>: ${a} mts, no se requiere de la medicion en la distancia poblacional, ya que no se puede obtener la distancia <b>d</b>. Lease punto 3.2`);
     }
+
+    resultado.razones.push("<b>Solo aplica en contexto de región de campo lejano</b>")
 
     eANE32_debug(resultado);
 
@@ -43,7 +55,17 @@ function minDistanciaPublico(resultado, PIRE, frecuencia, a, resultadoGral){
 function minDistanciaOcupacional(resultado, PIRE, frecuencia, a, resultadoGral){
 
     let r_min = 0;
-    resultado.titulo = "[Punto 3.2] Procesos para evaluacion simplificada espacio ocupacional para bandas no IMT"
+    resultado.titulo = "[Punto 3.2] Espacio Ocupacional: Evaluacion simplificada para bandas no IMT"
+
+    if (frecuencia < 30){
+        resultado.medicion = true;
+        resultadoGral.medicion = true;
+        resultadoGral.senalizar = true;
+        resultado.razones.push("La frecuencia es menor de 30Mhz, se debe seguir el procedimiento del punto 3.4 para mediciones de campos electromagnéticos.");
+        resultado.razones.push("Posiblemente se deba señalizar.");
+        return resultado;
+    }
+    resultado.razones.push("Vease la Figura 1 para saber el cálculo.");
 
     if (30 <= frecuencia && frecuencia <= 400){
         if (PIRE > 0){
@@ -59,6 +81,7 @@ function minDistanciaOcupacional(resultado, PIRE, frecuencia, a, resultadoGral){
         }else {r_min = 0}
     }else{
         resultado.medicion=true;
+        resultadoGral.medicion = true;
         resultado.razones.push("La frecuencia esta fuera de los rangos de evaluacion. Verifique su medicion de la frecuencia.");
         return resultado;
 
@@ -69,15 +92,17 @@ function minDistanciaOcupacional(resultado, PIRE, frecuencia, a, resultadoGral){
         resultado.conforme = true;
         resultadoGral.senalizar = true;
         resultadoGral.conforme = true;
-        resultado.razones.push(`Ya que la distancia r: ${r_min} > ${a}, se requiere de la medicion en la distancia ocupacional. Lease punto 3.2.`);
+        resultadoGral.medicion = true;
+        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts > <b>a</b>: ${a} mts, se requiere de la medicion y señalización en la distancia ocupacional y de rebasamiento. Lease punto 3.2.`);
     }else if (r_min == a){
         resultado.razones.push('Su PIRE es de 0, verifique sus datos.');
     }else{
         resultado.conforme = true;
         resultadoGral.conforme = true;
-        resultado.razones.push(`Ya que la distancia r: ${r_min} < ${a}, no se requiere de la medicion en la distancia ocupacional, ya que no se puede obtener. Lease punto 3.2`);
+        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts < <b>a</b>: ${a} mts, no se requiere de la medicion ó señalización en la distancia ocupacional y de rebasamiento, ya que no se puede obtener la distancia <b>d</b>. Lease punto 3.2`);
     }
 
+    resultado.razones.push("<b>Solo aplica en contexto de región de campo lejano</b>")
     eANE32_debug(resultado);
 
     return resultado;

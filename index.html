@@ -12,6 +12,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" async></script>
 
     <!--script src="scripts/main.js" type="module" crossorigin="anonymous" defer></script-->
+    <script src="scripts/evaluar_ANE_4.js" defer></script>
+    <script src="scripts/evaluar_ANE_7.js" defer></script>
     <script src="scripts/evaluar_ANE_3-2.js" defer></script>
     <script src="scripts/main.js"  defer></script>
 
@@ -21,7 +23,7 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="./index.html">Navbar</a>
+      <a class="navbar-brand" href="./index.html">Libreradio 🍋</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -48,23 +50,26 @@
             <form>
             <div id="contenedorDeBandas" class="mt-3">
                     <h3>Antena</h3>
-                    <label for="potenciaTransmisor">Potencia del Transmisor (db):</label><br>
-                    <input type="number" value="0" min="0" id="potenciaTransmisor" name="potenciaTransmisor"><br>
-                    <label for="gananciaAntena">Ganancia de la Antena (dBi):</label><br>
-                    <input type="number" value="0" min="0" id="gananciaAntena_dbi" name="gananciaAntena"><br>
-                    <label for="gananciaAntena">Ganancia de la Antena (dBd):</label><br>
-                    <input type="number" value="0" min="0" id="gananciaAntena_dbd" name="gananciaAntena"><br>
-                    <label for="atenuacion">Atenuación (dB):</label><br>
-                    <input type="value" value="0" max="0" id="atenuacion" name="atenuacion"><br>
-                    <label for="amplificador">Amplificador (dB):</label><br>
-                    <input type="value" value="0" min="0" id="amplificador" name="atenuacion"><br>
+                    <label for="potenciaTransmisor">Potencia del Transmisor (dBm):</label>
+                    <input type="number" value="0" min="0" id="potenciaTransmisor" name="potenciaTransmisor"/>
+                    <label for="gananciaAntena">Ganancia de la Antena (dBi):</label>
+                    <input type="number" value="0" min="0" id="gananciaAntena_dbi" name="gananciaAntena"/>
+                    <label for="gananciaAntena">Ganancia de la Antena (dBd):</label>
+                    <input type="number" value="0" min="0" id="gananciaAntena_dbd" name="gananciaAntena"/>
+                    <label for="atenuacion">Atenuación (dB):</label>
+                    <input type="value" value="0" max="0" id="atenuacion" name="atenuacion"/><br>
+                    <label for="amplificador">Amplificador (dB):</label>
+                    <input type="value" value="0" min="0" id="amplificador" name="atenuacion"/>
+                    <label>Tipo de frecuencia: <label>
+                    <input type="checkbox" id="chk_fm" name="chk_fm" checked />
+                    <label for="chk_fm">FM</label>
+                    <input type="checkbox" id="chk_am" name="chk_am" />
+                    <label for="chk_am">AM</label><br>
                     <label for="frecuencia">Frecuencia (MHz):</label>
-                    <input type="number" value="0" min="0" id="frecuencia" name="frecuencia"><br>
+                    <input type="number" value="0" min="0" id="frecuencia" name="frecuencia"/><br>
                     <label for="altura">Ingrese la altura de la  antena (mts):</label>
-                    <input type="number" value="0" min="0" id="altura" name="altura"><br>
+                    <input type="number" value="0" min="0" id="altura" name="altura"/><br>
                     <button type="button" class="btn btn-success" onclick="darResultados()">Evaluar mi antena</button>
-                    <div  id="resultadosEIRP" class="alert alert-primary" role="alert" class="resultado"></div>
-                    <div  id="resultadosERP" class="alert alert-primary" role="alert" class="resultado"></div><br>
                     <div id="quepasoCrack" class="resultado">
                     </div>
             </div>
@@ -72,5 +77,32 @@
         </div>
     </div>
 </div>
+<footer>
+        <div>
+            <p>Este aplicativo es software libre 😎</p>
+            <p>Licencia <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank">GPLv3</a> </p>
+            <p><a href="https://github.com/luzxyz/radiocosa" target="_blank" >Repositorio principal en github</a></p>
+        </div>
+        <div>
+            <h5>Contacto de los creadores 🔥</h5>
+            <a href="mailto:marlonpb@udistrital.edu.co">Marlon Patiño</a>
+            <p>marlonpb@udistrital.edu.co</p>
+            <a href="mailto:janderaster@protonmail.com">Jorge Gutierrez</a>
+            <p>janderaster@protonmail.com</p>
+            <a href="mailto:jrcabrerar@udistrital.edu.co">Jonathan Cabrera</a>
+            <p>jrcabrerar@udistrital.edu.co</p>
+            <a href="mailto:gaparrae@udistrital.edu.co">Andres Parra Espejo</a>
+            <p>gaparrae@udistrital.edu.co</p>
+            <a href="mailto:giovanny@mail.com">Giovanny Pira Aldana</a>
+            <p>giovanny@gio.vanny</p>
+        </div>
+        <div>
+            <h5>Con el apoyo de la Universidad Distrital FJC 🎓</h5>
+            <p><a href="https://www.udistrital.edu.co/inicio">Universidad Distrital FJC - Bogotá</a></p>
+            <p><a href="https://ftecnologica.udistrital.edu.co/">Facultad Tecnológica</a></p>
+            <p><a href="https://ftecnologica.udistrital.edu.co/ingtelematica/index.php/">Ingeniería Telemática</a></p>
+        </div>
+        </footer>
+
 </body>
 </html>

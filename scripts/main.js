@@ -11,11 +11,15 @@ class Antena {
     pire = 0;
     per = 0;
 
+    am = false;
+    fm = false;
+
     frecuencia = 0;
     altura = 0;
 
     constructor(potenciaTransmisor, gananciaAntena_dBi, gananciaAntena_dBd,
-                atenuacion, amplificador, frecuencia, altura){
+                atenuacion, amplificador, frecuencia, altura,
+                am, fm){
         
         // valores en dB
         this.potTrans = potenciaTransmisor;
@@ -30,8 +34,11 @@ class Antena {
         // valores en W
         this.pire = this.potTrans + this.antena_dbi + this.amplificador + this.atenuacion;
         this.per = this.potTrans + this.antena_dbd+ this.amplificador + this.atenuacion;
-        this.pire = this.dBtoW(this.pire)
-        this.per = this.dBtoW(this.per)
+        this.pire = this.dBmtoW(this.pire)
+        this.pire = this.dBmtoW(this.per)
+
+        this.am = am;
+        this.fm = fm;
 
         this.evaluaciones = [];
 
@@ -52,6 +59,11 @@ class Antena {
         return Math.pow(10,value/10);
     }
 
+    // dBm -> W
+    dBmtoW(value){
+        return 0.001*Math.pow(10,value/10);
+    }
+
     // dB -> dBm
     dBtodBm(value){
         return value+30;
@@ -63,8 +75,25 @@ class Antena {
     }
 }
 
-function debug(antena){
-    console.table(antena);
+function debug(que){
+    console.table(que);
+}
+
+function ponerResultados(antena){
+    const evaluaciones = evaluacion(antena);
+    evaluaciones.forEach((eva)=>{
+        const padre = document.getElementById("quepasoCrack");
+        const temp = document.createElement('div');
+        temp.innerHTML = eva;
+        padre.appendChild(temp);
+    });
+}
+
+function limpiarResultadosViejos(){
+   const padre = document.getElementById("quepasoCrack");
+   while (padre.firstChild) {
+        padre.removeChild(padre.firstChild);
+    }
 }
 
 function darResultados(){
@@ -77,42 +106,21 @@ function darResultados(){
     const frecuencia = parseFloat(document.getElementById('frecuencia').value);
     const altura = parseInt(document.getElementById('altura').value);
 
-    const antena = new Antena(potenciaTrans, antena_dbi, antena_dbd, atenuacion, amplificador, frecuencia, altura);
+    const am = document.getElementById('chk_am').checked;
+    const fm = document.getElementById('chk_fm').checked;
 
-    darPIRE_PER(antena);
-    const evaluaciones = evaluacion(antena);
-    evaluaciones.forEach((eva)=>{
-        const padre = document.getElementById("quepasoCrack");
-        const temp = document.createElement('div');
-        temp.innerHTML = eva;
-        padre.appendChild(temp);
-    });
+    const antena = new Antena(potenciaTrans, antena_dbi, antena_dbd,
+                              atenuacion, amplificador, frecuencia, altura,
+                              am, fm);
+
+    limpiarResultadosViejos();
+    ponerResultados(antena);
+
 
     debug(antena);
 }
            
-function darPIRE_PER(antena) {
 
-    const pire_w = antena.pire;
-    const pire_db = antena.WtodBW(pire_w);
-    const pire_dbm = antena.WtodBm(pire_w);
-
-    const per_w = antena.per;
-    const per_db = antena.WtodBW(per_w);
-    const per_dbm = antena.WtodBm(per_w);
-
-    document.getElementById('resultadosEIRP').innerHTML = 
-        '<strong>PIRE:</strong><br>' +
-        'PIRE en dBW: ' + pire_db.toFixed(2) + ' dBW'+'<br>' +
-        'PIRE en vatios: ' + pire_w.toFixed(2) + ' W<br>' +
-        'PIRE en dBm: ' + pire_dbm.toFixed(2)+ ' dBm';
-
-    document.getElementById('resultadosERP').innerHTML = 
-        '<strong>PER (PRA):</strong><br>' +
-        'PER en dBW: ' + per_db.toFixed(2) +' dBW'+ '<br>' +
-        'PER en vatios: ' + per_w.toFixed(2) + ' W<br>' +
-        'PER en dBm: ' + per_dbm.toFixed(2)+' dBm ';
-}
 
 function elementoChequeo(informacion){
 
@@ -125,12 +133,31 @@ function elementoChequeo(informacion){
     <p><strong>${informacion.titulo}</strong></p>
     `;
 
-    if (informacion.medicion) {
-        elemento = elemento.concat("\n","<h3><strong>SE TIENE QUE MEDIR</strong></h3>")
-    }
-
     listaRazones.forEach((razon)=> (elemento = elemento.concat("\n",razon)))
     elemento = elemento.concat("\n","</div>")
+
+    return elemento;
+
+}
+
+function elementoResultadoFinal(final){
+
+
+    const senalizar = final.senalizar
+    const medicion = final.medicion
+   
+    const queClase = (senalizar || medicion ) ? "alert-warning" : "alert-success";
+
+    const pSenn = senalizar ? "TOCA SEÑALIZAR" : "NO TOCA SEÑALIZAR";
+    const pMedicion = medicion ? "TOCA MEDIR" : "NO TOCA MEDIR";
+
+   const elemento =`
+    <div class="alert ${queClase}" role="alert">
+        <h3>${pSenn}</h3>
+        <h3>${pMedicion}</h3>
+        <p> Lea las razones en las siguientes entradas </p>
+    </div>
+    `;
 
     return elemento;
 
@@ -149,12 +176,21 @@ function chequeos(funcion_eval, ...args){
 
 function evaluacion(antena){
 
-    let listaElementos=[]
-    let resultadoGral = {
+    const listaElementos=[]
+    const resultadoGral = {
         senalizar : false,
         conforme: false,
         medicion: false
     }
+
+    const conformeConANE_4 = elementoChequeo(
+                chequeos(estacionesConformes, antena.pire,
+                        antena.pra, antena.fm, antena.altura, resultadoGral)
+            );
+
+    listaElementos.push(conformeConANE_4);
+
+    listaElementos.push(`<img src="assets/img1.png" alt="imagen de ayuda 1" width=400/>`);
 
     listaElementos.push(
             elementoChequeo(
@@ -167,6 +203,23 @@ function evaluacion(antena){
                 chequeos(minDistanciaOcupacional, antena.pire,
                         antena.frecuencia, antena.altura, resultadoGral)
             ));
+
+    listaElementos.push(
+            elementoChequeo(
+                chequeos(sennalizacion, antena.am, resultadoGral)
+            ));
+    
+    if (resultadoGral.senalizar){
+        listaElementos.push(`<p>Para señalar zonas de rebasamiento y ocupacional, usar los siguientes diseños. [link]</p>`);
+        listaElementos.push(`<img src="assets/avisos1.jpg" alt="rennales" width=400/>`);
+        listaElementos.push(`<p>La zona de rebasamiento en la más cercana a la antena, la ocupacional es donde los trabajadores certificados estarán, la zona de conformidad es donde la gente civil va a estar.</p>`);
+        listaElementos.push(`<img src="assets/acercade.jpg" alt="rennales" width=400/>`);
+    }
+
+    listaElementos.unshift(elementoResultadoFinal(resultadoGral));
+
+
+    debug(resultadoGral);
 
     return listaElementos;
     

@@ -6,7 +6,7 @@ function minDistanciaPublico(resultado, PIRE, frecuencia, a, resultadoGral){
         resultado.medicion = true;
         resultadoGral.medicion = true;
         resultadoGral.senalizar = true;
-        resultado.razones.push("La frecuencia es menor de 30Mhz, se debe seguir el procedimiento del punto 3.4 para mediciones de campos electromagnéticos.");
+        resultado.razones.push("La frecuencia es menor de 30Mhz, se debe seguir el procedimiento del punto 3.4 para mediciones de campos electromagnéticos. <a href='https://www.ane.gov.co/Sliders/ANE%202021/Resolucio%CC%81n%20%20No.%20000773%20de%2031102023.pdf#page=25' rel='noopener noreferrer nofollow' target='_blank'>Click aqui para ver</a>");
         resultado.razones.push("Posiblemente se deba señalizar.");
             return resultado;
     }
@@ -36,13 +36,13 @@ function minDistanciaPublico(resultado, PIRE, frecuencia, a, resultadoGral){
         resultado.conforme = true;
         resultadoGral.conforme = true;
         resultadoGral.medicion = true;
-        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts > <b>a</b>: ${a} mts, se requiere de la medicion en la distancia poblacional. Lease punto 3.2.`);
+        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts > <b>a</b>: ${a} mts, se requiere de la medicion en la distancia poblacional. Lease punto 3.2. <a href='https://www.ane.gov.co/Sliders/ANE%202021/Resolucio%CC%81n%20%20No.%20000773%20de%2031102023.pdf#page=23' rel='noopener noreferrer nofollow' target='_blank'>Click aqui para ver</a>`);
     }else if (r_min == a){
         resultado.razones.push('Su PIRE es de 0, verifique sus datos.');
     }else{
         resultado.conforme = true;
         resultadoGral.conforme = true;
-        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts <  <b>a</b>: ${a} mts, no se requiere de la medicion en la distancia poblacional, ya que no se puede obtener la distancia <b>d</b>. Lease punto 3.2`);
+        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts <  <b>a</b>: ${a} mts, no se requiere de la medicion en la distancia poblacional, ya que no se puede obtener la distancia <b>d</b>. Lease punto 3.2.  <a href='https://www.ane.gov.co/Sliders/ANE%202021/Resolucio%CC%81n%20%20No.%20000773%20de%2031102023.pdf#page=23' rel='noopener noreferrer nofollow' target='_blank'>Click aqui para ver</a>`);
     }
 
     resultado.razones.push("<b>Solo aplica en contexto de región de campo lejano</b>")
@@ -61,7 +61,7 @@ function minDistanciaOcupacional(resultado, PIRE, frecuencia, a, resultadoGral){
         resultado.medicion = true;
         resultadoGral.medicion = true;
         resultadoGral.senalizar = true;
-        resultado.razones.push("La frecuencia es menor de 30Mhz, se debe seguir el procedimiento del punto 3.4 para mediciones de campos electromagnéticos.");
+        resultado.razones.push("La frecuencia es menor de 30Mhz, se debe seguir el procedimiento del punto 3.4 para mediciones de campos electromagnéticos.<a href='https://www.ane.gov.co/Sliders/ANE%202021/Resolucio%CC%81n%20%20No.%20000773%20de%2031102023.pdf#page=25' rel='noopener noreferrer nofollow' target='_blank'>Click aqui para ver</a>");
         resultado.razones.push("Posiblemente se deba señalizar.");
         return resultado;
     }
@@ -93,13 +93,13 @@ function minDistanciaOcupacional(resultado, PIRE, frecuencia, a, resultadoGral){
         resultadoGral.senalizar = true;
         resultadoGral.conforme = true;
         resultadoGral.medicion = true;
-        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts > <b>a</b>: ${a} mts, se requiere de la medicion y señalización en la distancia ocupacional y de rebasamiento. Lease punto 3.2.`);
+        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts > <b>a</b>: ${a} mts, se requiere de la medicion y señalización en la distancia ocupacional y de rebasamiento. Lease punto 3.2. <a href='https://www.ane.gov.co/Sliders/ANE%202021/Resolucio%CC%81n%20%20No.%20000773%20de%2031102023.pdf#page=23' rel='noopener noreferrer nofollow' target='_blank'>Click aqui para ver</a>`);
     }else if (r_min == a){
         resultado.razones.push('Su PIRE es de 0, verifique sus datos.');
     }else{
         resultado.conforme = true;
         resultadoGral.conforme = true;
-        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts < <b>a</b>: ${a} mts, no se requiere de la medicion ó señalización en la distancia ocupacional y de rebasamiento, ya que no se puede obtener la distancia <b>d</b>. Lease punto 3.2`);
+        resultado.razones.push(`Ya que la distancia <b>r</b>: ${r_min.toFixed(2)} mts < <b>a</b>: ${a} mts, no se requiere de la medicion ó señalización en la distancia ocupacional y de rebasamiento, ya que no se puede obtener la distancia <b>d</b>. Lease punto 3.2.  <a href='https://www.ane.gov.co/Sliders/ANE%202021/Resolucio%CC%81n%20%20No.%20000773%20de%2031102023.pdf#page=23' rel='noopener noreferrer nofollow' target='_blank'>Click aqui para ver</a>`);
     }
 
     resultado.razones.push("<b>Solo aplica en contexto de región de campo lejano</b>")

@@ -3,13 +3,13 @@ function estacionesConformes(resultados, pire, pra, fm, a, resultadosGral){
     if (pire < 2) {
         resultadosGral.conforme = true;
         resultados.conforme = true;
-        resultados.razones.push("Debido a que el PIRE < 2 W, es inherentement conforme. No necesita medicion o evaluacion alguno.") 
+        resultados.razones.push("Debido a que el PIRE < 2 W, es inherentemente conforme. No necesita medicion o evaluacion alguno.<a href='https://www.ane.gov.co/Sliders/ANE%202021/Resolucio%CC%81n%20%20No.%20000773%20de%2031102023.pdf#page=35' rel='noopener noreferrer nofollow' target='_blank'>Click aqui para ver</a>") 
     }
 
     if (pra < 250 && fm && ( (a/2)+2 >=8 )) {
         resultadosGral.conforme = true;
         resultados.conforme = true;
-        resultados.razones.push("Debido a que su PRA < 250 W, usa una configuracion tipo FM, y la altura de su antena es lo suficientemente alta para estar conforme en relacion al espacio del publico general.") 
+        resultados.razones.push("Debido a que su PRA < 250 W, usa una configuracion tipo FM, y la altura de su antena es lo suficientemente alta para estar conforme en relacion al espacio del publico general.<a href='https://www.ane.gov.co/Sliders/ANE%202021/Resolucio%CC%81n%20%20No.%20000773%20de%2031102023.pdf#page=35' rel='noopener noreferrer nofollow' target='_blank'>Click aqui para ver</a>") 
     }
 
     if (!resultados.conforme){

@@ -32,3 +32,50 @@
     margin-top: 20px;
 }
 
+.Navbar {
+    position: sticky;
+    top: 0;
+    padding: 0.8em 0px;
+    background-color: #1B1D24;
+    z-index: 10;
+}
+
+.actionButtons > * {
+    margin: 0 0.4em;
+}
+
+
+.fakeButton {
+    text-decoration: none;
+    color: #D9D9DB;
+    background-color: #4D5266;
+    padding: 0.5em;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+footer {
+    display: flex;
+    flex-direction: row;
+    border-top: 2px gray solid;
+    margin-top: 2rem;
+}
+
+footer > div {
+    padding: 1rem 2rem;
+    margin: 0 auto;
+}
+
+@media (max-width: 800px) {
+  footer {
+    flex-direction: column;
+  }
+}
+
+@media print {
+  /* All your print styles go here */
+  footer {
+    display: none;
+  }
+}

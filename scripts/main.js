@@ -34,8 +34,9 @@ class Antena {
         // valores en W
         this.pire = this.potTrans + this.antena_dbi + this.amplificador + this.atenuacion;
         this.per = this.potTrans + this.antena_dbd+ this.amplificador + this.atenuacion;
+
         this.pire = this.dBmtoW(this.pire)
-        this.pire = this.dBmtoW(this.per)
+        this.per = this.dBmtoW(this.per)
 
         this.am = am;
         this.fm = fm;
@@ -190,30 +191,33 @@ function evaluacion(antena){
 
     listaElementos.push(conformeConANE_4);
 
-    listaElementos.push(`<img src="assets/img1.png" alt="imagen de ayuda 1" width=400/>`);
+    if(!resultadoGral.conforme){
 
-    listaElementos.push(
-            elementoChequeo(
-                chequeos(minDistanciaPublico, antena.pire,
-                        antena.frecuencia, antena.altura, resultadoGral)
-            ));
+        listaElementos.push(`<img src="assets/img1.png" alt="imagen de ayuda 1" width=400/>`);
 
-    listaElementos.push(
-            elementoChequeo(
-                chequeos(minDistanciaOcupacional, antena.pire,
-                        antena.frecuencia, antena.altura, resultadoGral)
-            ));
+        listaElementos.push(
+                elementoChequeo(
+                    chequeos(minDistanciaPublico, antena.pire,
+                            antena.frecuencia, antena.altura, resultadoGral)
+                ));
 
-    listaElementos.push(
-            elementoChequeo(
-                chequeos(sennalizacion, antena.am, resultadoGral)
-            ));
-    
-    if (resultadoGral.senalizar){
-        listaElementos.push(`<p>Para señalar zonas de rebasamiento y ocupacional, usar los siguientes diseños. [link]</p>`);
-        listaElementos.push(`<img src="assets/avisos1.jpg" alt="rennales" width=400/>`);
-        listaElementos.push(`<p>La zona de rebasamiento en la más cercana a la antena, la ocupacional es donde los trabajadores certificados estarán, la zona de conformidad es donde la gente civil va a estar.</p>`);
-        listaElementos.push(`<img src="assets/acercade.jpg" alt="rennales" width=400/>`);
+        listaElementos.push(
+                elementoChequeo(
+                    chequeos(minDistanciaOcupacional, antena.pire,
+                            antena.frecuencia, antena.altura, resultadoGral)
+                ));
+
+        listaElementos.push(
+                elementoChequeo(
+                    chequeos(sennalizacion, antena.am, resultadoGral)
+                ));
+        
+        if (resultadoGral.senalizar){
+            listaElementos.push(`<p>Para señalar zonas de rebasamiento y ocupacional, usar los siguientes diseños. [link]</p>`);
+            listaElementos.push(`<img src="assets/avisos1.jpg" alt="rennales" width=400/>`);
+            listaElementos.push(`<p>La zona de rebasamiento en la más cercana a la antena, la ocupacional es donde los trabajadores certificados estarán, la zona de conformidad es donde la gente civil va a estar.</p>`);
+            listaElementos.push(`<img src="assets/acercade.jpg" alt="rennales" width=400/>`);
+        }
     }
 
     listaElementos.unshift(elementoResultadoFinal(resultadoGral));
@@ -223,4 +227,89 @@ function evaluacion(antena){
 
     return listaElementos;
     
+}
+
+function guardarDatosAntenaJs(){
+    const potenciaTrans = parseFloat(document.getElementById('potenciaTransmisor').value);
+    const amplificador = parseFloat(document.getElementById('amplificador').value);
+    const atenuacion = parseFloat(document.getElementById('atenuacion').value);
+    const antena_dbi = parseFloat(document.getElementById('gananciaAntena_dbi').value);
+    const antena_dbd = parseFloat(document.getElementById('gananciaAntena_dbd').value);
+
+    const frecuencia = parseFloat(document.getElementById('frecuencia').value);
+    const altura = parseInt(document.getElementById('altura').value);
+
+    const am = document.getElementById('chk_am').checked;
+    const fm = document.getElementById('chk_fm').checked;
+    const comentario = document.getElementById('comentario').value;
+
+    return {
+        potT : potenciaTrans,
+        amp: amplificador,
+        ate: atenuacion,
+        a_dbi: antena_dbi,
+        a_dbd: antena_dbd,
+        freq: frecuencia,
+        alt: altura,
+        AM: am,
+        FM: fm,
+        com: comentario
+    }
+
+}
+
+function ponerDatosCarga(datos){
+    document.getElementById('potenciaTransmisor').value = datos.potT;
+    document.getElementById('amplificador').value = datos.amp;
+    document.getElementById('atenuacion').value = datos.ate;
+    document.getElementById('gananciaAntena_dbi').value = datos.a_dbi;
+    document.getElementById('gananciaAntena_dbd').value = datos.a_dbd;
+
+    document.getElementById('frecuencia').value = datos.freq;
+    document.getElementById('altura').value = datos.alt;
+
+    document.getElementById('chk_am').checked = datos.AM;
+    document.getElementById('chk_fm').checked = datos.FM;
+    document.getElementById('comentario').value = datos.com;
+
+}
+
+function cargarJson(e){
+    const fileReader = new FileReader();
+    fileReader.readAsText(e.files[0], "UTF-8");
+    fileReader.onload = e => {
+      const file = (JSON.parse(e.target.result));
+      ponerDatosCarga(file);
+    };
+    window.alert('Datos cargados exitosamente');
+}
+
+function guardarJson(){
+    const antenaJs = guardarDatosAntenaJs();
+
+
+    const jsonObj = `data:text/json;chatset=utf-8,${encodeURIComponent(
+              JSON.stringify(antenaJs)
+            )}`;
+
+    const anchor = document.createElement("a");
+    anchor.href = jsonObj;
+    anchor.download = "DatosAntena.json";
+
+    const clickEvt = new MouseEvent('click', {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+    });
+
+    anchor.dispatchEvent(clickEvt);
+    anchor.remove();
+
+}
+
+function imprimir(){ window.print() }
+
+function comoCarajo(){
+    window.alert(`Digite los valores en el formulario de la Antena, siguiendo los indicativos.\n\nEl boton de guardar mis datos descarga un formato de datos para guardarlos en su PC en formato .json.\n\nEl boton de imprimir imprime la evaluacion.\n\nEn 'Cargar datos de archivo' sirve para cargar los datos que guardo en formato .json y usarlos de nuevo en la evaluacion.\n
+        `);
 }

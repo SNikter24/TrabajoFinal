@@ -1,10 +1,10 @@
-//import { minDistanciaPublico, minDistanciaOcupacional } from "./evaluar_ANE_3-2.js";
+    //import { minDistanciaPublico, minDistanciaOcupacional } from "./evaluar_ANE_3-2.js";
 
-class Antena {
+    class Antena {
 
-    potTrans = 0;
-    antena_dbi = 0;
-    antena_dbd = 0;
+        potTrans = 0;
+        antena_dbi = 0;
+        antena_dbd = 0;
     atenuacion = 0;
     amplificador = 0;
 
@@ -213,7 +213,7 @@ function evaluacion(antena){
                 ));
         
         if (resultadoGral.senalizar){
-            listaElementos.push(`<p>Para señalar zonas de rebasamiento y ocupacional, usar los siguientes diseños. [link]</p>`);
+            listaElementos.push(`<p>Para señalar zonas de rebasamiento y ocupacional, usar los siguientes diseños.</p>`);
             listaElementos.push(`<img src="assets/avisos1.jpg" alt="rennales" width=400/>`);
             listaElementos.push(`<p>La zona de rebasamiento en la más cercana a la antena, la ocupacional es donde los trabajadores certificados estarán, la zona de conformidad es donde la gente civil va a estar.</p>`);
             listaElementos.push(`<img src="assets/acercade.jpg" alt="rennales" width=400/>`);

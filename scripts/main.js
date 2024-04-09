@@ -1,10 +1,10 @@
-    //import { minDistanciaPublico, minDistanciaOcupacional } from "./evaluar_ANE_3-2.js";
+//import { minDistanciaPublico, minDistanciaOcupacional } from "./evaluar_ANE_3-2.js";
 
-    class Antena {
+class Antena {
 
-        potTrans = 0;
-        antena_dbi = 0;
-        antena_dbd = 0;
+    potTrans = 0;
+    antena_dbi = 0;
+    antena_dbd = 0;
     atenuacion = 0;
     amplificador = 0;
 
@@ -97,6 +97,14 @@ function limpiarResultadosViejos(){
     }
 }
 
+function escribirPIREPER(antena){
+    const per = document.getElementById('valorPER');
+    const pire = document.getElementById('valorPIRE');
+
+    per.innerHTML = `PER: ${antena.WtodBm(antena.per)}dBm`;
+    pire.innerHTML = `PIRE: ${antena.WtodBm(antena.pire)}dBm`;
+}
+
 function darResultados(){
     const potenciaTrans = parseFloat(document.getElementById('potenciaTransmisor').value);
     const amplificador = parseFloat(document.getElementById('amplificador').value);
@@ -116,6 +124,7 @@ function darResultados(){
 
     limpiarResultadosViejos();
     ponerResultados(antena);
+    escribirPIREPER(antena);
 
 
     debug(antena);

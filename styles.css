@@ -1,0 +1,89 @@
+#contenedorDeBandas {
+    /* Ajusta esto según necesites */
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+.banda {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    text-align: center; /* Centra el texto */
+}
+.banda input[type="text"], .banda input[type="number"] {
+    display: block; /* Hace que el input use todo el ancho disponible */
+    width: 80%; /* Define el ancho del input */
+    margin: 10px auto; /* Centra el input horizontalmente */
+    padding: 5px; /* Agrega algo de padding dentro del input para que se vea mejor */
+}
+       
+/* Estilo para botones dentro de las bandas */
+.banda button {
+    width: auto; /* Permite que el botón se ajuste al texto */
+    display: block; /* Asegura que el botón esté centrado */
+    margin: 20px auto; /* Espacio arriba y abajo, centrado horizontalmente */
+}
+        
+.resultado {
+    padding: 15px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.Navbar {
+    position: sticky;
+    top: 0;
+    padding: 0.8em 0px;
+    background-color: #1B1D24;
+    z-index: 10;
+}
+
+.actionButtons > * {
+    margin: 0 0.4em;
+}
+
+
+.fakeButton {
+    text-decoration: none;
+    color: #D9D9DB;
+    background-color: #4D5266;
+    padding: 0.5em;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+footer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2rem;
+    background: #E8F4FA;
+    -webkit-box-shadow: 0px -6px 19px -8px rgba(0,0,0,0.26);
+    -moz-box-shadow: 0px -6px 19px -8px rgba(0,0,0,0.26);
+    box-shadow: 0px -6px 19px -8px rgba(0,0,0,0.26);
+}
+
+footer a, footer p {
+    padding: 0;
+    margin: 0;
+}
+
+footer > div {
+    padding: 1rem 2rem;
+    margin: 0 auto;
+}
+
+@media (max-width: 800px) {
+  footer {
+    flex-direction: column;
+  }
+}
+
+@media print {
+  /* All your print styles go here */
+  footer {
+    display: none;
+  }
+}

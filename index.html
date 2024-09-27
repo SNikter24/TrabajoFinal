@@ -1,34 +1,146 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍋RadioFacil</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="./index.html">Inicio</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="./Calculos.html">Proyecto</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-              </li>
-            </ul>
-            
-          </div>
+
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" async></script>
+
+    <!--script src="scripts/main.js" type="module" crossorigin="anonymous" defer></script-->
+    <script src="scripts/evaluar_ANE_4.js" defer></script>
+    <script src="scripts/evaluar_ANE_7.js" defer></script>
+    <script src="scripts/evaluar_ANE_3-2.js" defer></script>
+    <script src="scripts/validaciones.js" defer></script>
+    <script src="scripts/main.js"  defer></script>
+
+</head>
+
+<body>
+
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a class="navbar-brand" href="#">🍋RadioFacil</a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item mt-1">
+            <button class="btn btn-secondary my-2 my-sm-0 mx-2" onclick="imprimir()" >Imprimir</button>
+          </li>
+          <li class="nav-item mt-1">
+            <button class="btn btn-secondary my-sm-0 mx-2" onclick="guardarJson()" >Guardar mis datos</button>
+          </li>
+          <li class="nav-item mt-1">
+            <button class="btn btn-info my-2 my-sm-0 mx-2" onclick="comoCarajo()" >¿Como usar este aplicativo?</button>
+          </li>
+          <li class="nav-item mt-1">
+            <span class="navbar-text">
+                Cargar datos de archivo:
+            </span>
+            <input  type="file" onchange="cargarJson(this)" />
+          </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+        <img src="assets/udlogo.png" alt="udlogo" width=200/>
+<form>
+  <h3>Antena</h3>
+  <div class="mb-3">
+    <label class="form-label" for="potenciaTransmisor">Potencia del Transmisor (dBm):</label>
+    <input class="form-control" type="number" placeholder="numeros positivos y 0" min="0" id="potenciaTransmisor" name="potenciaTransmisor" onkeyup="valmin(this)"/>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="gananciaAntena">Ganancia de la Antena (dBi):</label>
+    <input class="form-control" type="number" placeholder="numeros positivos y 0"  min="0" id="gananciaAntena_dbi" name="gananciaAntena" onkeyup="valmin(this)"/>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="gananciaAntena">Ganancia de la Antena (dBd):</label>
+    <input class="form-control" type="number" placeholder="numeros positivos y 0"  min="0" id="gananciaAntena_dbd" name="gananciaAntena" onkeyup="valmin(this)"/>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="atenuacion">Atenuación (dB):</label>
+    <input class="form-control" type="value" placeholder="numeros negativos y 0"  max="0" id="atenuacion" name="atenuacion" onkeyup="valmax(this)"/><br>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="amplificador">Amplificador (dB):</label>
+    <input class="form-control" type="value" placeholder="numeros positivos y 0"  min="0" id="amplificador" name="atenuacion" onkeyup="valmin(this)"/>
+  </div>
+  <p>Tipo de frecuencia:</p>
+  <div class="mb-3 form-check">
+    <input class="form-check-input" type="checkbox" id="chk_fm" name="chk_fm" checked />
+    <label class="form-check-label" for="chk_fm">FM</label>
+  </div>
+  <div class="mb-3 form-check">
+    <input class="form-check-input" type="checkbox" id="chk_am" name="chk_am" />
+    <label class="form-check-label" for="chk_am">AM</label><br>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="frecuencia">Frecuencia (MHz):</label>
+    <input class="form-control" type="number" placeholder="numeros positivos y 0"  min="0" id="frecuencia" name="frecuencia" onkeyup="valmin(this)"/><br>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="altura">Ingrese la altura de la  antena (mts):</label>
+    <input class="form-control" type="number" placeholder="numeros positivos y 0"  min="0" id="altura" name="altura" onkeyup="valmin(this)"/><br>
+  </div>
+  <div class="mb-3 mt-5">
+    <label class="form-label" for="comentario">Comentario:</label>
+    <textarea class="form-control" placeholder="Coloque aqui sus comentarios." id="comentario" name="comentario" rows="4" cols="50"></textarea>
+  </div>
+  <h5 id="valorPIRE">PIRE: ? dBm</h5>
+  <h5 id="valorPER">PER: ? dBm</h5>
+  <button type="button" class="btn btn-success" onclick="darResultados()">Evaluar mi antena</button>
+</form>
+</div>
+</div>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div id="contenedorDeBandas" class="mt-3">
+                    <div id="quepasoCrack" class="resultado">
+                    </div>
+            </div>
         </div>
-      </nav>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  </body>
+    </div>
+</div>
+<footer class="feet">
+        <div>
+            <h5>Este aplicativo es software libre 😎</h5>
+            <p>Licencia <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank">GPLv3</a> </p>
+            <p><a href="https://github.com/luzxyz/radiocosa" target="_blank" >Repositorio principal en github</a></p>
+        </div>
+        <div>
+            <h5>Contacto de los creadores 🔥</h5>
+            <a href="mailto:marlonpb@udistrital.edu.co">Marlon Patiño</a>
+            <p>marlonpb@udistrital.edu.co</p>
+            <a href="mailto:janderaster@protonmail.com">Jorge Gutierrez</a>
+            <p>janderaster@protonmail.com</p>
+            <a href="mailto:jrcabrerar@udistrital.edu.co">Jonathan Cabrera</a>
+            <p>jrcabrerar@udistrital.edu.co</p>
+            <a href="mailto:gaparrae@udistrital.edu.co">Andres Parra Espejo</a>
+            <p>gaparrae@udistrital.edu.co</p>
+            <a href="mailto:gapiraa@udistrital.edu.co">Giovanny Pira Aldana</a>
+            <p>gapiraa@udistrital.edu.co</p>
+        </div>
+        <div>
+            <h5>Con el apoyo de la Universidad Distrital FJC 🎓</h5>
+            <p><a href="https://www.udistrital.edu.co/inicio">Universidad Distrital FJC - Bogotá</a></p>
+            <p><a href="https://ftecnologica.udistrital.edu.co/">Facultad Tecnológica</a></p>
+            <p><a href="https://ftecnologica.udistrital.edu.co/ingtelematica/index.php/">Ingeniería Telemática</a></p>
+        </div>
+</footer>
+
+</body>
 </html>
